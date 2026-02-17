@@ -1,0 +1,16 @@
+---
+import Layout from '../components/astro/Layout.astro';
+import ExamComparison from '../components/react/ExamComparison';
+import { exams } from '../utils/exam-helpers';
+---
+
+<Layout title="Compare Exams" description="Compare CNCF certification exams side-by-side">
+  <div class="max-w-6xl mx-auto">
+    <h1 class="text-3xl font-bold text-cncf-navy mb-2">Compare Exams</h1>
+    <p class="text-gray-500 mb-8">
+      Select up to 3 exams to compare their domains, weightings, and details side-by-side.
+    </p>
+
+    <ExamComparison exams={exams} client:load />
+  </div>
+</Layout>

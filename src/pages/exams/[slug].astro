@@ -1,0 +1,117 @@
+---
+import Layout from '../../components/astro/Layout.astro';
+import DomainChart from '../../components/react/DomainChart';
+import { exams, getAllExamIds } from '../../utils/exam-helpers';
+
+export function getStaticPaths() {
+  return getAllExamIds().map((id) => ({ params: { slug: id } }));
+}
+
+const { slug } = Astro.params;
+const exam = exams.find((e) => e.id === slug);
+
+if (!exam) {
+  return Astro.redirect('/404');
+}
+
+const pdfUrl = `/pdfs/${encodeURIComponent(exam.pdfFilename)}`;
+---
+
+<Layout title={`${exam.abbreviation} - ${exam.name}`} description={exam.description.substring(0, 160)}>
+  <div class="max-w-4xl mx-auto">
+    <a href="/" class="text-cncf-blue hover:underline text-sm mb-6 inline-block">
+      &larr; Back to all exams
+    </a>
+
+    <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-8">
+      <div>
+        <h1 class="text-4xl font-bold text-cncf-navy">{exam.abbreviation}</h1>
+        <h2 class="text-xl text-gray-600 mt-1">{exam.name}</h2>
+      </div>
+      <a
+        href={pdfUrl}
+        class="inline-flex items-center gap-2 bg-cncf-blue text-white px-5 py-2.5 rounded-lg hover:bg-cncf-navy transition-colors text-sm font-medium whitespace-nowrap"
+        download
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+        Download PDF
+      </a>
+    </div>
+
+    <!-- Description -->
+    <section class="bg-white rounded-lg shadow-md p-6 mb-6">
+      <h3 class="text-lg font-bold text-cncf-navy mb-3">Exam Description</h3>
+      <div class="text-gray-700 leading-relaxed space-y-3">
+        {exam.description.split('\n').filter((p: string) => p.trim()).map((paragraph: string) => (
+          <p>{paragraph}</p>
+        ))}
+      </div>
+      {exam.trainingUrl && (
+        <a
+          href={exam.trainingUrl}
+          class="inline-block mt-4 text-cncf-blue hover:underline text-sm font-medium"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View on Linux Foundation Training &rarr;
+        </a>
+      )}
+    </section>
+
+    <!-- Domains -->
+    {exam.domains.length > 0 && (
+      <section class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <h3 class="text-lg font-bold text-cncf-navy mb-4">Domain Weighting</h3>
+        <DomainChart domains={exam.domains} client:load />
+
+        <div class="mt-6 space-y-2">
+          {exam.domains.map((domain: { name: string; weight: number }) => (
+            <div class="flex justify-between items-center py-2 px-3 bg-gray-50 rounded">
+              <span class="text-sm text-gray-700">{domain.name}</span>
+              <span class="text-sm font-bold text-cncf-navy">{domain.weight}%</span>
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- Resources -->
+    {exam.resources && exam.resources.length > 0 && (
+      <section class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <h3 class="text-lg font-bold text-cncf-navy mb-3">Resources</h3>
+        <ul class="space-y-2">
+          {exam.resources.map((url: string) => (
+            <li>
+              <a
+                href={url}
+                class="text-sm text-cncf-blue hover:underline break-all"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {url}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    <!-- Contributors -->
+    {exam.contributors.length > 0 && (
+      <section class="bg-white rounded-lg shadow-md p-6">
+        <h3 class="text-lg font-bold text-cncf-navy mb-3">
+          Contributors ({exam.contributors.length})
+        </h3>
+        <div class="flex flex-wrap gap-2">
+          {exam.contributors.map((name: string) => (
+            <span class="text-xs bg-gray-100 text-gray-700 px-3 py-1.5 rounded-full">
+              {name}
+            </span>
+          ))}
+        </div>
+      </section>
+    )}
+  </div>
+</Layout>

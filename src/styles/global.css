@@ -1,0 +1,7 @@
+@import "tailwindcss";
+
+@theme {
+  --color-cncf-blue: #436B95;
+  --color-cncf-navy: #2E4057;
+  --color-cncf-light: #F5F7FA;
+}

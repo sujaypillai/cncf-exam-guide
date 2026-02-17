@@ -1,0 +1,30 @@
+---
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+import '../../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = 'Explore all CNCF certification exams, compare domains, and find your learning path.' } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title} | CNCF Exam Guide</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body class="bg-cncf-light min-h-screen flex flex-col text-gray-800">
+    <Header />
+    <main class="flex-grow container mx-auto px-4 py-8 max-w-7xl">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

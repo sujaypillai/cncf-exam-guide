@@ -1,0 +1,36 @@
+---
+import Layout from '../components/astro/Layout.astro';
+import TechnologyDomainSection from '../components/astro/TechnologyDomainSection.astro';
+import { TECHNOLOGY_DOMAINS } from '../data/technology-domains';
+import { exams } from '../utils/exam-helpers';
+---
+
+<Layout title="Home">
+  <div class="mb-12 text-center">
+    <h1 class="text-4xl md:text-5xl font-bold text-cncf-navy mb-4">
+      CNCF Certification Exam Guide
+    </h1>
+    <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+      Explore all {exams.length} CNCF certification exams, compare domains, and discover
+      your learning path in the cloud native ecosystem.
+    </p>
+    <div class="mt-8 flex flex-wrap justify-center gap-4">
+      <a
+        href="/learning-paths"
+        class="bg-cncf-blue text-white px-6 py-3 rounded-lg hover:bg-cncf-navy transition-colors font-medium"
+      >
+        View Learning Paths
+      </a>
+      <a
+        href="/compare"
+        class="border-2 border-cncf-blue text-cncf-blue px-6 py-3 rounded-lg hover:bg-cncf-blue hover:text-white transition-colors font-medium"
+      >
+        Compare Exams
+      </a>
+    </div>
+  </div>
+
+  {TECHNOLOGY_DOMAINS.map((domain) => (
+    <TechnologyDomainSection domain={domain} />
+  ))}
+</Layout>
