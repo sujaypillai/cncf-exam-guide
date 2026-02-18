@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import type { Exam, ExamDomain, TechnologyDomain } from '../types/exam';
+import type { Exam, ExamDomain, ExamLevel, TechnologyDomain } from '../types/exam';
 
 const CURRICULUM_PATH = path.resolve(import.meta.dirname, '../../../curriculum');
 const OUTPUT_PATH = path.resolve(import.meta.dirname, '../data/exams.json');
@@ -10,24 +10,26 @@ interface ExamMeta {
   name: string;
   technologyDomain: TechnologyDomain;
   pdfFilename: string;
+  level: ExamLevel;
+  prerequisites: string[];
 }
 
 const EXAM_METADATA: Record<string, ExamMeta> = {
-  cka: { abbreviation: 'CKA', name: 'Certified Kubernetes Administrator', technologyDomain: 'kubernetes-core', pdfFilename: 'CKA_Curriculum_v1.34.pdf' },
-  ckad: { abbreviation: 'CKAD', name: 'Certified Kubernetes Application Developer', technologyDomain: 'kubernetes-core', pdfFilename: 'CKAD_Curriculum_v1.34.pdf' },
-  cks: { abbreviation: 'CKS', name: 'Certified Kubernetes Security Specialist', technologyDomain: 'kubernetes-core', pdfFilename: 'CKS_Curriculum v1.34.pdf' },
-  kcna: { abbreviation: 'KCNA', name: 'Kubernetes and Cloud Native Associate', technologyDomain: 'kubernetes-core', pdfFilename: 'KCNA_Curriculum.pdf' },
-  kcsa: { abbreviation: 'KCSA', name: 'Kubernetes and Cloud Native Security Associate', technologyDomain: 'kubernetes-core', pdfFilename: 'KCSA Curriculum.pdf' },
-  cgoa: { abbreviation: 'CGOA', name: 'Certified GitOps Associate', technologyDomain: 'gitops-cd', pdfFilename: 'CGOA_Curriculum.pdf' },
-  capa: { abbreviation: 'CAPA', name: 'Certified Argo Project Associate', technologyDomain: 'gitops-cd', pdfFilename: 'CAPA_Curriculum.pdf' },
-  cca: { abbreviation: 'CCA', name: 'Cilium Certified Associate', technologyDomain: 'networking-service-mesh', pdfFilename: 'CCA_Curriculum.pdf' },
-  ica: { abbreviation: 'ICA', name: 'Istio Certified Associate', technologyDomain: 'networking-service-mesh', pdfFilename: 'ICA_Curriculum.pdf' },
-  pca: { abbreviation: 'PCA', name: 'Prometheus Certified Associate', technologyDomain: 'observability', pdfFilename: 'PCA_Curriculum.pdf' },
-  otca: { abbreviation: 'OTCA', name: 'OpenTelemetry Certified Associate', technologyDomain: 'observability', pdfFilename: 'OTCA_Curriculum.pdf' },
-  cnpa: { abbreviation: 'CNPA', name: 'Certified Cloud Native Platform Engineering Associate', technologyDomain: 'platform-engineering', pdfFilename: 'CNPA_Curriculum.pdf' },
-  cnpe: { abbreviation: 'CNPE', name: 'Certified Cloud Native Platform Engineer', technologyDomain: 'platform-engineering', pdfFilename: 'CNPE_Curriculum.pdf' },
-  cba: { abbreviation: 'CBA', name: 'Certified Backstage Associate', technologyDomain: 'platform-engineering', pdfFilename: 'CBA_Curriculum.pdf' },
-  kca: { abbreviation: 'KCA', name: 'Kyverno Certified Associate', technologyDomain: 'policy-governance', pdfFilename: 'KCA_Curriculum.pdf' },
+  cka: { abbreviation: 'CKA', name: 'Certified Kubernetes Administrator', technologyDomain: 'kubernetes-core', pdfFilename: 'CKA_Curriculum_v1.34.pdf', level: 'professional', prerequisites: [] },
+  ckad: { abbreviation: 'CKAD', name: 'Certified Kubernetes Application Developer', technologyDomain: 'kubernetes-core', pdfFilename: 'CKAD_Curriculum_v1.34.pdf', level: 'professional', prerequisites: [] },
+  cks: { abbreviation: 'CKS', name: 'Certified Kubernetes Security Specialist', technologyDomain: 'kubernetes-core', pdfFilename: 'CKS_Curriculum v1.34.pdf', level: 'professional', prerequisites: ['cka'] },
+  kcna: { abbreviation: 'KCNA', name: 'Kubernetes and Cloud Native Associate', technologyDomain: 'kubernetes-core', pdfFilename: 'KCNA_Curriculum.pdf', level: 'associate', prerequisites: [] },
+  kcsa: { abbreviation: 'KCSA', name: 'Kubernetes and Cloud Native Security Associate', technologyDomain: 'kubernetes-core', pdfFilename: 'KCSA Curriculum.pdf', level: 'associate', prerequisites: [] },
+  cgoa: { abbreviation: 'CGOA', name: 'Certified GitOps Associate', technologyDomain: 'gitops-cd', pdfFilename: 'CGOA_Curriculum.pdf', level: 'associate', prerequisites: [] },
+  capa: { abbreviation: 'CAPA', name: 'Certified Argo Project Associate', technologyDomain: 'gitops-cd', pdfFilename: 'CAPA_Curriculum.pdf', level: 'associate', prerequisites: [] },
+  cca: { abbreviation: 'CCA', name: 'Cilium Certified Associate', technologyDomain: 'networking-service-mesh', pdfFilename: 'CCA_Curriculum.pdf', level: 'associate', prerequisites: [] },
+  ica: { abbreviation: 'ICA', name: 'Istio Certified Associate', technologyDomain: 'networking-service-mesh', pdfFilename: 'ICA_Curriculum.pdf', level: 'associate', prerequisites: [] },
+  pca: { abbreviation: 'PCA', name: 'Prometheus Certified Associate', technologyDomain: 'observability', pdfFilename: 'PCA_Curriculum.pdf', level: 'associate', prerequisites: [] },
+  otca: { abbreviation: 'OTCA', name: 'OpenTelemetry Certified Associate', technologyDomain: 'observability', pdfFilename: 'OTCA_Curriculum.pdf', level: 'associate', prerequisites: [] },
+  cnpa: { abbreviation: 'CNPA', name: 'Certified Cloud Native Platform Engineering Associate', technologyDomain: 'platform-engineering', pdfFilename: 'CNPA_Curriculum.pdf', level: 'associate', prerequisites: [] },
+  cnpe: { abbreviation: 'CNPE', name: 'Certified Cloud Native Platform Engineer', technologyDomain: 'platform-engineering', pdfFilename: 'CNPE_Curriculum.pdf', level: 'professional', prerequisites: [] },
+  cba: { abbreviation: 'CBA', name: 'Certified Backstage Associate', technologyDomain: 'platform-engineering', pdfFilename: 'CBA_Curriculum.pdf', level: 'associate', prerequisites: [] },
+  kca: { abbreviation: 'KCA', name: 'Kyverno Certified Associate', technologyDomain: 'policy-governance', pdfFilename: 'KCA_Curriculum.pdf', level: 'associate', prerequisites: [] },
 };
 
 function stripArtifacts(text: string): string {
@@ -126,6 +128,8 @@ function parseExam(examId: string): Exam {
       technologyDomain: meta.technologyDomain,
       contributors: [],
       hasReadme: false,
+      level: meta.level,
+      prerequisites: meta.prerequisites,
     };
   }
 
@@ -148,6 +152,8 @@ function parseExam(examId: string): Exam {
     hasReadme: true,
     trainingUrl: extractTrainingUrl(content),
     resources: extractResources(content),
+    level: meta.level,
+    prerequisites: meta.prerequisites,
   };
 }
 

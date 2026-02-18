@@ -1,11 +1,11 @@
 {
   "navigationFallback": {
     "rewrite": "/404.html",
-    "exclude": ["/pdfs/*", "/*.{css,js,png,gif,ico,jpg,svg,pdf,json}"]
+    "exclude": ["/pdfs/*", "/pagefind/*", "/*.{css,js,png,gif,ico,jpg,svg,pdf,json}"]
   },
   "globalHeaders": {
     "X-Content-Type-Options": "nosniff",
-    "X-Frame-Options": "DENY",
+    "X-Frame-Options": "SAMEORIGIN",
     "X-XSS-Protection": "1; mode=block"
   }
 }
