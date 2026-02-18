@@ -24,8 +24,8 @@ import Layout from '../components/astro/Layout.astro';
 
 <script is:inline>
   async function initPagefind() {
-    const mod = await import('/pagefind/pagefind-ui.js');
-    new mod.PagefindUI({
+    await import('/pagefind/pagefind-ui.js');
+    new window.PagefindUI({
       element: '#search',
       showSubResults: true,
       showImages: false,

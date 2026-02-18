@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import type { Exam, ExamDomain, ExamLevel, TechnologyDomain } from '../types/exam';
+import { EXAM_DETAILS } from '../data/exam-details';
 
 const CURRICULUM_PATH = path.resolve(import.meta.dirname, '../../../curriculum');
 const OUTPUT_PATH = path.resolve(import.meta.dirname, '../data/exams.json');
@@ -116,6 +117,8 @@ function parseExam(examId: string): Exam {
   const meta = EXAM_METADATA[examId];
   const readmePath = path.join(CURRICULUM_PATH, examId, 'README.md');
 
+  const details = EXAM_DETAILS[examId] ?? {};
+
   if (!fs.existsSync(readmePath)) {
     console.log(`  [skip] ${examId}: no README, creating minimal entry`);
     return {
@@ -130,6 +133,7 @@ function parseExam(examId: string): Exam {
       hasReadme: false,
       level: meta.level,
       prerequisites: meta.prerequisites,
+      ...details,
     };
   }
 
@@ -154,6 +158,7 @@ function parseExam(examId: string): Exam {
     resources: extractResources(content),
     level: meta.level,
     prerequisites: meta.prerequisites,
+    ...details,
   };
 }
 

@@ -72,6 +72,9 @@ export default function ExamComparison({ exams }: Props) {
             </thead>
             <tbody>
               <Row label="Full Name" values={compared.map((e) => e.name)} />
+              <Row label="Duration" values={compared.map((e) => e.duration ?? '—')} />
+              <Row label="Questions" values={compared.map((e) => e.questionCount ? `${e.questionCount} ${e.questionLabel || 'questions'}` : '—')} />
+              <Row label="Format" values={compared.map((e) => e.format === 'performance-based' ? 'Performance-based' : e.format === 'multiple-choice' ? 'Multiple choice' : '—')} />
               <Row label="Technology Domain" values={compared.map((e) => DOMAIN_LABELS[e.technologyDomain] ?? e.technologyDomain)} />
               <Row label="Number of Domains" values={compared.map((e) => String(e.domains.length))} />
               <tr>

@@ -41,7 +41,14 @@ export default function ExamCardReact({ exam }: ExamCardReactProps) {
         {descriptionPreview}...
       </p>
       <div className="flex items-center justify-between text-xs text-gray-400 mt-auto">
-        <span>{exam.contributors.length} contributors</span>
+        <div className="flex items-center gap-3">
+          <span>{exam.contributors.length} contributors</span>
+          {exam.format && (
+            <span className="text-xs text-gray-500">
+              {exam.format === 'performance-based' ? 'Performance' : 'MCQ'}
+            </span>
+          )}
+        </div>
         <span className="text-cncf-blue font-medium">View details &rarr;</span>
       </div>
     </a>
