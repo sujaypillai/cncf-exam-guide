@@ -16,6 +16,7 @@ if (!exam) {
 }
 
 const pdfUrl = `/pdfs/${encodeURIComponent(exam.pdfFilename)}`;
+const formatLabel = exam.format === 'performance-based' ? 'Performance-based' : 'Multiple choice';
 ---
 
 <Layout title={`${exam.abbreviation} - ${exam.name}`} description={exam.description.substring(0, 160)}>
@@ -44,6 +45,48 @@ const pdfUrl = `/pdfs/${encodeURIComponent(exam.pdfFilename)}`;
       </div>
     </div>
 
+    <!-- Exam Details Bar -->
+    {exam.duration && (
+      <div class="flex flex-wrap gap-6 md:gap-10 bg-gray-100 rounded-lg px-6 py-4 mb-6">
+        <div class="flex items-center gap-2">
+          <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <div>
+            <span class="text-xs text-gray-500 block">Duration</span>
+            <span class="text-sm font-bold text-cncf-navy">{exam.duration}</span>
+          </div>
+        </div>
+        {exam.questionCount && (
+          <div class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <div>
+              <span class="text-xs text-gray-500 block">Questions</span>
+              <span class="text-sm font-bold text-cncf-navy">{exam.questionCount} {exam.questionLabel || 'questions'}</span>
+            </div>
+          </div>
+        )}
+        {exam.format && (
+          <div class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+            <div>
+              <span class="text-xs text-gray-500 block">Format</span>
+              <span class="text-sm font-bold text-cncf-navy">{formatLabel}</span>
+            </div>
+          </div>
+        )}
+      {exam.lastVerified && (
+          <div class="ml-auto self-end">
+            <span class="text-xs text-gray-400">Verified {exam.lastVerified}</span>
+          </div>
+        )}
+      </div>
+    )}
+
     <!-- Description -->
     <section class="bg-white rounded-lg shadow-md p-6 mb-6">
       <h3 class="text-lg font-bold text-cncf-navy mb-3">Exam Description</h3>
@@ -52,16 +95,28 @@ const pdfUrl = `/pdfs/${encodeURIComponent(exam.pdfFilename)}`;
           <p>{paragraph}</p>
         ))}
       </div>
-      {exam.trainingUrl && (
-        <a
-          href={exam.trainingUrl}
-          class="inline-block mt-4 text-cncf-blue hover:underline text-sm font-medium"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          View on Linux Foundation Training &rarr;
-        </a>
-      )}
+      <div class="mt-4 flex flex-wrap gap-x-6 gap-y-2">
+        {exam.trainingUrl && (
+          <a
+            href={exam.trainingUrl}
+            class="text-cncf-blue hover:underline text-sm font-medium"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View on Linux Foundation Training &rarr;
+          </a>
+        )}
+        {exam.documentationUrl && (
+          <a
+            href={exam.documentationUrl}
+            class="text-cncf-blue hover:underline text-sm font-medium"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Official Documentation &rarr;
+          </a>
+        )}
+      </div>
     </section>
 
     <!-- Domains -->
@@ -99,6 +154,39 @@ const pdfUrl = `/pdfs/${encodeURIComponent(exam.pdfFilename)}`;
             </li>
           ))}
         </ul>
+      </section>
+    )}
+
+    <!-- Simulation Providers -->
+    {exam.simulationProviders && exam.simulationProviders.length > 0 && (
+      <section class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <h3 class="text-lg font-bold text-cncf-navy mb-3">Exam Simulators</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {exam.simulationProviders.map((provider: { name: string; url: string; includedWithPurchase: boolean }) => (
+            <a
+              href={provider.url}
+              class="flex items-center justify-between border rounded-lg p-4 hover:border-cncf-blue transition-colors"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <div>
+                <span class="text-sm font-medium text-cncf-navy">{provider.name}</span>
+                {provider.includedWithPurchase && (
+                  <span class="ml-2 text-xs bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-semibold">
+                    Included with exam
+                  </span>
+                )}
+              </div>
+              <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
+          ))}
+        </div>
+        <p class="text-xs text-gray-400 mt-3">
+          killer.sh simulator sessions are included with exam registration via the Linux Foundation.
+          Additional practice environments may be available from other providers.
+        </p>
       </section>
     )}
 

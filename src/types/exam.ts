@@ -13,6 +13,14 @@ export type TechnologyDomain =
 
 export type ExamLevel = 'associate' | 'professional';
 
+export type ExamFormat = 'performance-based' | 'multiple-choice';
+
+export interface SimulationProvider {
+  name: string;
+  url: string;
+  includedWithPurchase: boolean;
+}
+
 export interface Exam {
   id: string;
   name: string;
@@ -27,6 +35,13 @@ export interface Exam {
   resources?: string[];
   level: ExamLevel;
   prerequisites: string[];
+  duration?: string;
+  questionCount?: number;
+  questionLabel?: string;
+  format?: ExamFormat;
+  simulationProviders?: SimulationProvider[];
+  documentationUrl?: string;
+  lastVerified?: string;
 }
 
 export interface TechnologyDomainInfo {
