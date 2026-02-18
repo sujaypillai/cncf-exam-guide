@@ -1,6 +1,7 @@
 ---
 import Layout from '../../components/astro/Layout.astro';
 import DomainChart from '../../components/react/DomainChart';
+import PdfViewerButton from '../../components/react/PdfViewerButton';
 import { exams, getAllExamIds } from '../../utils/exam-helpers';
 
 export function getStaticPaths() {
@@ -18,7 +19,7 @@ const pdfUrl = `/pdfs/${encodeURIComponent(exam.pdfFilename)}`;
 ---
 
 <Layout title={`${exam.abbreviation} - ${exam.name}`} description={exam.description.substring(0, 160)}>
-  <div class="max-w-4xl mx-auto">
+  <div class="max-w-4xl mx-auto" data-pagefind-body data-pagefind-meta={`title:${exam.abbreviation} - ${exam.name}`}>
     <a href="/" class="text-cncf-blue hover:underline text-sm mb-6 inline-block">
       &larr; Back to all exams
     </a>
@@ -28,16 +29,19 @@ const pdfUrl = `/pdfs/${encodeURIComponent(exam.pdfFilename)}`;
         <h1 class="text-4xl font-bold text-cncf-navy">{exam.abbreviation}</h1>
         <h2 class="text-xl text-gray-600 mt-1">{exam.name}</h2>
       </div>
-      <a
-        href={pdfUrl}
-        class="inline-flex items-center gap-2 bg-cncf-blue text-white px-5 py-2.5 rounded-lg hover:bg-cncf-navy transition-colors text-sm font-medium whitespace-nowrap"
-        download
-      >
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-        </svg>
-        Download PDF
-      </a>
+      <div class="flex gap-2">
+        <PdfViewerButton pdfUrl={pdfUrl} title={`${exam.abbreviation} - ${exam.name}`} client:load />
+        <a
+          href={pdfUrl}
+          class="inline-flex items-center gap-2 border-2 border-cncf-blue text-cncf-blue px-5 py-2.5 rounded-lg hover:bg-cncf-blue hover:text-white transition-colors text-sm font-medium whitespace-nowrap"
+          download
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          Download
+        </a>
+      </div>
     </div>
 
     <!-- Description -->

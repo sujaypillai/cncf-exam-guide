@@ -11,6 +11,8 @@ export type TechnologyDomain =
   | 'platform-engineering'
   | 'policy-governance';
 
+export type ExamLevel = 'associate' | 'professional';
+
 export interface Exam {
   id: string;
   name: string;
@@ -23,6 +25,8 @@ export interface Exam {
   hasReadme: boolean;
   trainingUrl?: string;
   resources?: string[];
+  level: ExamLevel;
+  prerequisites: string[];
 }
 
 export interface TechnologyDomainInfo {

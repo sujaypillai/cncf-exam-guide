@@ -4,8 +4,8 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "build": "npm run sync-curriculum && npm run parse-curriculum && astro build",
-    "build:local": "npm run parse-curriculum && astro build",
+    "build": "npm run sync-curriculum && npm run parse-curriculum && astro build && npx pagefind --site dist",
+    "build:local": "npm run parse-curriculum && astro build && npx pagefind --site dist",
     "preview": "astro preview",
     "sync-curriculum": "node scripts/sync-curriculum.mjs",
     "parse-curriculum": "tsx src/scripts/parse-curriculum.ts",

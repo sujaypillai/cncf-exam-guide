@@ -1,0 +1,35 @@
+---
+import Layout from '../components/astro/Layout.astro';
+---
+
+<Layout title="Search" description="Search across all CNCF certification exam content">
+  <div class="max-w-4xl mx-auto">
+    <h1 class="text-3xl font-bold text-cncf-navy mb-2">Search</h1>
+    <p class="text-gray-500 mb-8">Find exams, domains, and learning resources across all CNCF certifications.</p>
+    <div id="search"></div>
+  </div>
+</Layout>
+
+<link href="/pagefind/pagefind-ui.css" rel="stylesheet" />
+<style>
+  :root {
+    --pagefind-ui-primary: #436B95;
+    --pagefind-ui-text: #2E4057;
+    --pagefind-ui-border: #e5e7eb;
+    --pagefind-ui-border-width: 1px;
+    --pagefind-ui-border-radius: 8px;
+    --pagefind-ui-font: inherit;
+  }
+</style>
+
+<script is:inline>
+  async function initPagefind() {
+    const mod = await import('/pagefind/pagefind-ui.js');
+    new mod.PagefindUI({
+      element: '#search',
+      showSubResults: true,
+      showImages: false,
+    });
+  }
+  initPagefind();
+</script>

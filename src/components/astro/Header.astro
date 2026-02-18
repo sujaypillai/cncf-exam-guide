@@ -4,6 +4,7 @@ const navItems = [
   { href: '/exams', label: 'All Exams' },
   { href: '/learning-paths', label: 'Learning Paths' },
   { href: '/compare', label: 'Compare' },
+  { href: '/search', label: 'Search' },
 ];
 ---
 
@@ -22,10 +23,15 @@ const navItems = [
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
         </svg>
       </button>
-      <ul class="hidden md:flex space-x-6">
+      <ul class="hidden md:flex items-center space-x-6">
         {navItems.map(({ href, label }) => (
           <li>
-            <a href={href} class="hover:text-cncf-light transition-colors text-sm font-medium">
+            <a href={href} class={`hover:text-cncf-light transition-colors text-sm font-medium ${label === 'Search' ? 'flex items-center gap-1' : ''}`}>
+              {label === 'Search' && (
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              )}
               {label}
             </a>
           </li>
