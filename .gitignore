@@ -23,4 +23,7 @@ src/data/exams.json
 
 # PDFs (copied from curriculum submodule at build time)
 public/pdfs/
+
+# Pagefind symlink for dev (points to dist/pagefind)
+public/pagefind
 .vscode/
